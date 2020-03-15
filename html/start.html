@@ -1,0 +1,132 @@
+{% extends 'main.html' %}
+{% load i18n %}
+{% block title %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row align-items-left" style="margin-top: 10%">
+
+        {% if data.added == 1 %}
+        <div class="col-sm-12">
+            {{ data.date }}
+                <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                {{ field.label_tag }}
+                                {{ field }}
+                            {% endfor %}
+                    <button class="btn btn-sm btn-primary" type="submit">{% trans "add" %}</button>
+                </form>
+        </div><br>
+
+        {% endif %}
+    </div>
+    <div class="row">
+        <script>
+            var endpoint = '/api/graph/'
+            var chart = []
+            var lab = []
+            var bmi = []
+            var weight = []
+            var idealWeight = []
+            $.ajax({
+                method: "GET",
+                url: endpoint,
+                success: function(data){
+                    chart = data.chartData
+                    weight = data.weight
+                    lab = data.label
+                    for(var i = 0; i < 10; i++){
+                        bmi.push(data.bmi)
+                        idealWeight.push(data.idealweight)
+                    }
+                    setChart()
+                },
+                error: function(error_data){
+
+                }
+            })
+        function setChart() {
+            var ctx = document.getElementById('bmi').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: lab.reverse(),
+                    datasets: [{
+                        label: 'BMI (Body Mass Index)',
+                        data: chart.reverse(),
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderWidth: 5,
+                    },{
+                        label: 'BMI for you height',
+                        data: bmi.reverse(),
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 7,
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)'
+
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false
+                            }
+                        }]
+                    }
+                }
+            })
+            var ctx2 = document.getElementById('weight').getContext('2d');
+            var myChart2 = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: lab,
+                    datasets: [{
+                        label: 'Weight',
+                        data: weight.reverse(),
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderWidth: 5,
+                    },{
+                        label: 'Ideal weight',
+                        data: idealWeight,
+                        borderColor: 'rgba(124,196,255, 1)',
+                        borderWidth: 7,
+                        backgroundColor: 'rgb(124,196,255, 0.2)'
+
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false
+                            }
+                        }]
+                    }
+                }
+            })
+        }
+        </script>
+        <div class="col-sm-10">
+            <canvas id="bmi" width="600" height="400"></canvas>
+        </div>
+        <div class="col-sm-2">
+
+            <h3>Analysis</h3> <br>
+
+        </div>
+    </div>
+    <div class="row" style="margin-top: 5%">
+        <div class="col-sm-10">
+        <canvas id="weight" width="600" height="400"></canvas>
+        </div>
+        <div class="col-sm-2">
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

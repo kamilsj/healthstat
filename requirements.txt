@@ -1,0 +1,12 @@
+stravalib==0.10.2
+tensorflow==2.1.0
+fitparse==1.1.0
+django_heroku==0.3.1
+choochoo==0.29.3
+python_tcxparser==1.1.0
+django_countries==6.0
+cryptography==2.8
+Django==3.0.4
+bokeh==2.0.0
+django_storages==1.9.1
+djangorestframework==3.11.0

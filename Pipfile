@@ -1,0 +1,29 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+
+[packages]
+django = "*"
+gunicorn = "*"
+django-heroku = "*"
+stravalib = "*"
+facebook-sdk = "*"
+psycopg2-binary = "*"
+django-countries = "*"
+Pillow = "*"
+django_cron = "*"
+django-widget-tweaks = "*"
+
+#upload files
+boto3 = "*"
+django-storages = "*"
+
+#experimental features
+tensorflow = "*"
+djangorestframework = "*"
+
+[requires]
+
+python_version = "3.7"

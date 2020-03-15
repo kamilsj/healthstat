@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+ <div class="container">
+        <div class="row justify-content-center align-items-center" style="margin-top: 10%">
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                  <p>
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+                    {% for error in field.errors %}
+                      <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                  </p>
+                {% endfor %}
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+              </form>
+        </div>
+    </div>
+
+
+{% endblock %}
