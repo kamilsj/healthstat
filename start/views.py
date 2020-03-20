@@ -26,6 +26,9 @@ class Index(View):
             else:
                 form = {}
                 data['added'] = 0
+        else:
+            form = {}
+            data = {}
 
         return render(request, 'start.html', {'form': form, 'data': data})
 
@@ -72,9 +75,7 @@ class ImportActivities(View):
             athlete = strava.get_athlete()
             activities = strava.get_activities()
             imported = ImportStravaDataApi()
-            for activity in activities:
-                print(activity.moving_time)
-                imported.AddApi(request.user.id, activities)
+            imported.AddApi(request.user.id, activities)
 
             data = {
                 'athlete': athlete.firstname,
@@ -111,8 +112,10 @@ def profile(request, profile_id=0):
 
     age = (date.today() - detailed_profile.bday) // timedelta(days=365.2425)
     IdealWeight = calculations.WeightIdeal(detailed_profile.gender, detailed_profile.height)
-    BodyFat = calculations.BodyFat(detailed_profile.gender, detailed_body.neck,
-                                   detailed_body.hip, detailed_body.waist, detailed_profile.height)
+    if detailed_body:
+        BodyFat = calculations.BodyFat(detailed_profile.gender, detailed_body.neck, detailed_body.hip, detailed_body.waist, detailed_profile.height)
+    else:
+        BodyFat = 'Not enought data to calculate!'
     data = {
         'name': profile.get_full_name(),
         'id': user.id,

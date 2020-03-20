@@ -11,3 +11,10 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        try:
+            email_check = User.objects.filter(email=email).exists()
+        except User.DoesNotExist:
+            raise forms.ValidationError("This email is taken")

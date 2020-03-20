@@ -28,18 +28,29 @@ class ChartData(APIView):
         label = []
         chartData = []
         weight = []
+
+        profile = UserProfile.objects.get(usrId=user.id)
+
         if health.count() > 1:
             for healthData in health:
                 label.append(healthData['date'].strftime("%d %b %y"))
-                chartData.append(round(healthData['bmi'], 2))
+                if healthData['bmi'] == 0:
+                    if profile.height > 0 and profile.height < 250:
+                        bmi = healthData['weight']/(profile.height/100)**2
+                        HealthData.objects.filter(id=healthData['id']).update(bmi=bmi)
+                        chartData.append(round(bmi, 2))
+                else:
+                    chartData.append(round(healthData['bmi'], 2))
+
                 weight.append(healthData['weight'])
         else:
             label = health[0]['date'].strftime("%d %b %y")
-            chartData = round(health[0]['bmi'], 2)
+            if health['bmi'] > 0:
+                chartData = round(health[0]['bmi'], 2)
             weight = health[0]['weight']
             
 
-        profile = UserProfile.objects.get(usrId=user.id)
+
         [IdealWeight, bmi] = self.calculations.WeightIdeal(profile.gender, profile.height)
 
         data = {

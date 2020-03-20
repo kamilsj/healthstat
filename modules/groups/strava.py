@@ -2,12 +2,13 @@ from stravalib import Client
 from modules.secrets import STRAVA_DATA
 from start.models import ApiTokens
 
-
 strava_data = STRAVA_DATA
 
-def CheckApiTokens(usriId):
+
+def CheckApiTokens(usrId):
     if ApiTokens.objects.filter(usrId=usrId).exist():
         pass
+
 
 def StravaUrl(client_id=strava_data[0], redirect_url='http://127.0.0.1:8000/start/activities/import'):
     client = Client()

@@ -1,7 +1,11 @@
 .idea/
+.nova/
+
 modules/secrets.py
 migrations
 staticfiles
 healthstat.wpr
 healthstat.wpu
 .DS_Store
+__pycache__
+

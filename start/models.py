@@ -1,17 +1,18 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
-from datetime import date
+
 
 class UserProfile(models.Model):
     usrId = models.BigIntegerField(blank=False)
-    profilephoto = models.FileField()
+    profilephoto = models.FileField(default='', blank=True)
     idealweight = models.FloatField(default=0)
     height = models.IntegerField(default=0, null=True)
     gender = models.BooleanField(choices=((0, "Male"), (1, "Female")), default=0)
-    bday = models.DateField(default=date.today(), blank=True)
-    country = CountryField(null=True)
+    bday = models.DateField(default=timezone.now, blank=True)
+    country = CountryField(default='', blank=True)
 
     def __int__(self):
         return self.usrId
@@ -43,9 +44,9 @@ class ActivitiesStravaData(models.Model):
     activity_id = models.BigIntegerField(null=True)
     name = models.CharField(max_length=1024)
     distance = models.FloatField(null=True)
-    moving_time = models.DateTimeField()
-    elapsed_time = models.DateTimeField()
-    total_elevation_gain = models.FloatField(null=True)
+    moving_time = models.CharField(max_length=128)
+    elapsed_time = models.CharField(max_length=128)
+    total_elevation_gain = models.CharField(max_length=128, null=True)
     average_speed = models.FloatField(null=True)
     max_speed = models.FloatField(null=True)
     average_cadence = models.FloatField(null=True)
