@@ -1,6 +1,7 @@
 .idea/
 .nova/
 
+
 modules/secrets.py
 migrations
 staticfiles

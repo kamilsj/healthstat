@@ -8,12 +8,11 @@
     <div class="row align-items-left" style="margin-top: 10%">
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-3 text-center"><img src="{{ data.purl }}" class="img-thumbnail rounded"/></div>
+                <div class="col-sm-6"><img src="{{ data.url }}" class="img-thumbnail rounded"/></div>
+                <div clsdd="col-sm-3">{{ data.name }} <b>({{ data.id }})</b><br>{{ data.age }}</div>
             </div>
         </div>
-            {{ data.name }}<br>
-            {{ data.id }}<br>
-            {{ data.age }}
+
         </div>
         <div class="col-sm-6">
             {{ data.IdealWeight }}<br><br>

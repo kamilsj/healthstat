@@ -8,6 +8,8 @@ from AI.learn import WeightCalculations
 from modules.groups.strava import *
 from modules.importer import ImportStravaDataApi
 
+from healthstat.settings import AWS_S3_CUSTOM_DOMAIN
+
 
 class Index(View):
 
@@ -56,8 +58,9 @@ def activities(request):
     
     data = {}
     
-    
     return render(request, 'start/activities.html', {'data': data})
+
+
 
 class ImportActivities(View):
 
@@ -92,6 +95,7 @@ class ImportActivities(View):
         pass
 
 
+
 def profile(request, profile_id=0):
     user = request.user
     calculations = WeightCalculations()
@@ -116,10 +120,14 @@ def profile(request, profile_id=0):
         BodyFat = calculations.BodyFat(detailed_profile.gender, detailed_body.neck, detailed_body.hip, detailed_body.waist, detailed_profile.height)
     else:
         BodyFat = 'Not enought data to calculate!'
+
+    url = "https://"+AWS_S3_CUSTOM_DOMAIN+"/media/"+str(detailed_profile.profilephoto)
+
     data = {
         'name': profile.get_full_name(),
         'id': user.id,
         'age': age,
+        'url': url,
         'IdealWeight': IdealWeight,
         'BodyFat': BodyFat,
     }
